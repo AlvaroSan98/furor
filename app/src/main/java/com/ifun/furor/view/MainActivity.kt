@@ -1,7 +1,8 @@
-package com.ifun.furor
+package com.ifun.furor.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ifun.furor.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
