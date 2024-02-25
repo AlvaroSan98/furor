@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="@dimen/bottom_test_toolbar_icons_size"
+        android:layout_height="@dimen/bottom_test_toolbar_icons_size"
+        android:src="@drawable/icon_tick"
+        android:layout_marginBottom="@dimen/bottom_test_toolbar_icons_margin_bottom"
+        android:layout_marginEnd="@dimen/test_fragment_question_margin_end"
+        android:padding="@dimen/bottom_test_toolbar_icons_padding"
+        android:backgroundTint="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/bottom_test_toolbar_icons_size"
+        android:layout_height="@dimen/bottom_test_toolbar_icons_size"
+        android:layout_marginBottom="@dimen/bottom_test_toolbar_icons_margin_bottom"
+        android:layout_marginStart="@dimen/test_fragment_question_margin_start"
+        android:padding="@dimen/bottom_test_toolbar_icons_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/icon_cross" />
+</androidx.constraintlayout.widget.ConstraintLayout>
