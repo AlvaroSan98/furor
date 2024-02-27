@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_ranking"
+        android:id="@+id/game_ranking_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/top_test_toolbar_number_padding"
@@ -18,7 +18,7 @@
         tools:text="1º" />
 
     <TextView
-        android:id="@+id/tv_points"
+        android:id="@+id/team_points_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/top_test_toolbar_number_padding"
@@ -30,15 +30,15 @@
         tools:text="22" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/current_team_tv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_points"
-        app:layout_constraintStart_toEndOf="@+id/tv_ranking"
+        app:layout_constraintEnd_toStartOf="@+id/team_points_tv"
+        app:layout_constraintStart_toEndOf="@+id/game_ranking_tv"
         app:layout_constraintTop_toTopOf="parent"
 
         tools:text="Equipo 1" />
