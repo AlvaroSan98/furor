@@ -2,8 +2,8 @@ package com.ifun.furor.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import com.ifun.furor.R
+import androidx.fragment.app.Fragment
 import com.ifun.furor.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
