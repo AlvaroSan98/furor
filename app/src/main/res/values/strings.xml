@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">furor</string>
+    
+    <string name="points">%d puntos</string>
+    <string name="title_song_text">Adivina el título</string>
+    <string name="author_song_text">Adivina el autor</string>
+    <string name="continue_song_text">Continúa la canción</string>
+    <string name="songs_of_author">Di 3 canciones de...</string>
+    <string name="mime">Mímica</string>
+    <string name="the_strange_one">¿Qué canción no es de...?</string>
+    <string name="the_oldest">¿Qué canción es más antigua?</string>
+    <string name="song_sound">Adivina la canción</string>
+    <string name="potpurri">¡Popurrí!</string>
+    <string name="title_song_emojis">Adivina el título</string>
+    <string name="curiosity">¿Sabías que...?</string>
+
 </resources>

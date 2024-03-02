@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/top_toolbar"
         layout="@layout/top_test_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/top_toolbar"
 
         tools:text="ADIVINA EL TÍTULO \n DE LA CANCIÓN"/>
 
@@ -35,17 +35,17 @@
         android:id="@+id/test_question_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="@dimen/test_fragment_question_margin_top"
-        android:layout_marginStart="@dimen/test_fragment_question_margin_start"
-        android:layout_marginEnd="@dimen/test_fragment_question_margin_end"
-        android:textSize="40sp"
-        android:lines="5"
+        android:layout_marginEnd="32dp"
         android:gravity="center"
+        android:lines="5"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/test_title_tv"
 
-        tools:text="Dónde están las gatas que no hablan y tiran..."/>
+        tools:text="Dónde están las gatas que no hablan y tiran..." />
 
     <TextView
         android:id="@+id/test_points_tv"
@@ -60,7 +60,7 @@
         tools:text="25 puntos" />
 
     <include
-        android:id="@+id/include_bottom"
+        android:id="@+id/bottom_toolbar"
         layout="@layout/bottom_test_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         android:layout_width="@dimen/test_fragment_progressbar_size"
         android:layout_height="@dimen/test_fragment_progressbar_size"
         android:layout_marginBottom="@dimen/test_fragment_progressbar_margin_bottom"
-        app:layout_constraintBottom_toTopOf="@+id/include_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
