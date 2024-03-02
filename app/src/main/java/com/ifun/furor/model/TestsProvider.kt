@@ -58,8 +58,7 @@ class TestsProvider {
                     TestType.fromInt(array[0].toInt()),
                     DifficultType.fromInt(array[2].toInt()),
                     array[1],
-                    array[3]
-                )
+                    array[3])
                 )
             }
             TestType.SONGS_OF_AUTHOR.value,
@@ -71,8 +70,7 @@ class TestsProvider {
                     TestWithQuestion(
                     TestType.fromInt(array[0].toInt()),
                     DifficultType.fromInt(array[2].toInt()),
-                    array[1]
-                )
+                    array[1])
                 )
             }
             TestType.THE_STRANGE_ONE.value,
@@ -84,8 +82,7 @@ class TestsProvider {
                     DifficultType.fromInt(array[2].toInt()),
                     array[1],
                     array[3],
-                    listOf(array[4], array[5], array[6], array[7])
-                )
+                    listOf(array[4], array[5], array[6], array[7]))
                 )
             }
         }

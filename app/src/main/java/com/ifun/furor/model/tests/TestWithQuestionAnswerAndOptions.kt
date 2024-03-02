@@ -8,6 +8,6 @@ class TestWithQuestionAnswerAndOptions(
     difficulty: DifficultType,
     question: String,
     answer: String,
-    options: List<String>): TestWithQuestionAndAnswer(type, difficulty, question, answer) {
+    val options: List<String>): TestWithQuestionAndAnswer(type, difficulty, question, answer) {
 
 }
