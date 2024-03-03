@@ -14,4 +14,6 @@
     <string name="title_song_emojis">Adivina el título</string>
     <string name="curiosity">¿Sabías que...?</string>
 
+    <string name="play_icon_content_description">Play icon</string>
+
 </resources>
