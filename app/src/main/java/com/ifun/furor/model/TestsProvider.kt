@@ -1,7 +1,9 @@
 package com.ifun.furor.model
 
+import android.content.Context
 import android.os.Environment
 import android.util.Log
+import com.ifun.furor.R
 import com.ifun.furor.model.enums.DifficultType
 import com.ifun.furor.model.enums.TestType
 import com.ifun.furor.model.tests.Test
@@ -11,44 +13,41 @@ import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
+import java.io.InputStreamReader
 import java.lang.Exception
 
-class TestsProvider {
-
-    private var tests = ArrayList<Test>()
+class TestsProvider(private val context: Context) {
 
     fun getTests(): List<Test> {
-        return tests
+        return getCsvTests()
     }
 
-    fun getCsvTests() {
-        val folder = File(Environment.getExternalStorageDirectory().toString() + "/tests_csv.txt")
-        if (!folder.exists()) {
-            Log.e("TestsProvider", "getCsvTests folder does not exist")
-        } else {
-            try {
-                val fileReader = FileReader(folder)
-                val bufferedReader = BufferedReader(fileReader)
-                readCsvFile(bufferedReader)
-            } catch (e: Exception) {
-                Log.e("TestsProvider", "getCsvTests error reading file")
-            }
+    private fun getCsvTests(): List<Test> {
+        try {
+            val inputStream = context.resources.openRawResource(R.raw.tests_csv)
+            val inputStreamReader = InputStreamReader(inputStream)
+            val bufferedReader = BufferedReader(inputStreamReader)
+            return readCsvFile(bufferedReader)
+        } catch (e: Exception) {
+            Log.e("TestsProvider", "getCsvTests error reading file")
+            return emptyList()
         }
     }
 
-    private fun readCsvFile(bufferedReader: BufferedReader) {
-        var auxString: String
+    private fun readCsvFile(bufferedReader: BufferedReader): List<Test> {
+        var testsList = ArrayList<Test>()
 
-        auxString = bufferedReader.readLine()
-        while (auxString != null) {
-            var auxArray = auxString.split(";")
-            fillTest(auxArray)
-
-            auxString = bufferedReader.readLine()
+        val iterator = bufferedReader.lineSequence().iterator()
+        while (iterator.hasNext()) {
+            val line = iterator.next()
+            var auxArray = line.split(";")
+            fillTest(auxArray, testsList)
         }
+
+        return testsList
     }
 
-    private fun fillTest(array: List<String>) {
+    private fun fillTest(array: List<String>, tests: ArrayList<Test>) {
         when (array[0].toInt()) {
             TestType.CONTINUE_SONG_TEXT.value,
             TestType.TITLE_SONG_TEXT.value,
@@ -63,14 +62,23 @@ class TestsProvider {
             }
             TestType.SONGS_OF_AUTHOR.value,
             TestType.MIME.value,
-            TestType.POTPURRI.value,
+            TestType.POTPURRI.value -> {
+                tests.add(
+                    TestWithQuestion(
+                        TestType.fromInt(array[0].toInt()),
+                        DifficultType.fromInt(array[2].toInt()),
+                        array[1])
+                )
+            }
             TestType.SONG_SOUND.value,
             TestType.TITLE_SONG_EMOJIS.value -> {
                 tests.add(
                     TestWithQuestion(
-                    TestType.fromInt(array[0].toInt()),
-                    DifficultType.fromInt(array[2].toInt()),
-                    array[1])
+                        TestType.fromInt(array[0].toInt()),
+                        DifficultType.fromInt(array[2].toInt()),
+                        array[1],
+                        true
+                    )
                 )
             }
             TestType.THE_STRANGE_ONE.value,
