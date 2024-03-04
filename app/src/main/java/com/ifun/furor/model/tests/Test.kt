@@ -9,7 +9,7 @@ open class Test(val type: TestType, val difficulty: DifficultType) {
 
     val seconds = getTimeMillis() / 1000
     val points = getTestPoints()
-    val operation = getTestOperation()
+    val operation = Operations.ADD
 
     fun getTimeMillis(): Long {
         return when (type) {

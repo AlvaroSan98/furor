@@ -15,7 +15,7 @@ class Game(private val team1: Team, private val team2: Team) {
     private var currentTestTime: Long = 0
     private lateinit var currentTestOperation: Operations
 
-    private lateinit var timer: CountDownTimer
+    private var timer: CountDownTimer? = null
 
     fun startGame(context: Context) {
         tests = TestsProvider(context).getTests()
@@ -32,12 +32,15 @@ class Game(private val team1: Team, private val team2: Team) {
     }
 
     fun answer(correct: Boolean) {
+        timer?.cancel()
         finalAnswer(correct)
     }
 
     private fun getNextTest() {
+        if (timer != null)
+            timer?.cancel()
         currentTest = tests[Random.nextInt(tests.size)]
-        startTimer()
+        //startTimer()
     }
 
     private fun getNextTeam() {
@@ -60,11 +63,11 @@ class Game(private val team1: Team, private val team2: Team) {
             }
 
         }
-        timer.start()
+        timer?.start()
     }
 
     private fun finalAnswer(correct: Boolean) {
-        if (currentTestOperation == Operations.ADD) {
+        if (currentTest.operation == Operations.ADD) {
             if (!correct) {
                 if (currentTeam == team1) {
                     team2.addPoints(currentTest.points)
@@ -84,6 +87,14 @@ class Game(private val team1: Team, private val team2: Team) {
                     team1.removePoints(currentTest.points)
                 }
             }
+        }
+    }
+
+    fun isCurrentTeamWinning(): Boolean {
+        if (currentTeam == team1) {
+            return team1.getPoints() >= team2.getPoints()
+        } else {
+            return team2.getPoints() >= team1.getPoints()
         }
     }
 }

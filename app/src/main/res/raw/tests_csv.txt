@@ -106,8 +106,8 @@
 8;ay_vamos_un_sec;3;Ay vamos;;;;;; 
 8;hasta_que_se_seque_el_malecon_un_sec;2;Hasta que se seque el malecón;;;;;; 
 8;rayos_de_sol_un_sec;2;Rayos de sol;;;;;; 
-8;;2;Usted;;;;;usted_un_sec; 
-8;he_llorado_como_un_niño_un_sec;3;He llorado como un niño;;;;;; 
+8;usted_un_sec;2;Usted;;;;;;
+8;he_llorado_como_un_nino_un_sec;3;He llorado como un niño;;;;;;
 8;mal_de_amores_un_sec;2;Mal de amores;;;;;; 
 8;ella_no_sigue_modas_un_sec;3;Ella no sigue modas;;;;;; 
 8;soy_un_don_un_sec;3;Soy un don;;;;;; 
@@ -117,7 +117,7 @@
 8;superman_sin_capa_un_sec;2;Superman sin capa;;;;;; 
 8;rueda_rueda_un_sec;3;Rueda rueda;;;;;; 
 8;zumba_un_sec;2;Zumba;;;;;; 
-8;el_señor_de_la_noche_un_sec;3;El señor de la noche;;;;;; 
+8;el_senor_de_la_noche_un_sec;3;El señor de la noche;;;;;;
 8;taboo_un_sec;2;Taboo;;;;;; 
 8;salio_el_sol_un_sec;3;Salio el sol;;;;;;
 8;bandoleros_un_sec;2;Bandoleros;;;;;;
@@ -168,7 +168,7 @@
 9;Bellaquear;4;;;;;;;
 9;Duro;4;;;;;;;
 9;Bebé;4;;;;;;;
-10;he_llorado_como_un_niño_emojis;3;He llorado como un niño;;;;;;;
+10;he_llorado_como_un_nino_emojis;3;He llorado como un niño;;;;;;;
 10;noche_de_sexo_emojis;2;Noche de sexo;;;;;;;
 10;amaneci_contento_emojis;3;Amanecí contento;;;;;;;
 10;es_un_secreto_emojis;3;Es un secreto;;;;;;;
@@ -179,7 +179,7 @@
 10;mal_de_amores_emojis;4;Mal de amores;;;;;;;
 10;rayos_de_sol_emojis;1;Rayos de sol;;;;;;;
 10;baila_morena_emojis;2;Baila morena;;;;;;;
-10;el_señor_de_la_noche_emojis;3;El señor de la noche;;;;;;;
+10;el_senor_de_la_noche_emojis;3;El señor de la noche;;;;;;;
 10;la_nueva_y_la_ex_emojis;4;La nueva y la ex;;;;;;;
 10;virtual_diva_emojis;4;Virtual diva;;;;;;;
 10;dile_emojis;4;Dile;;;;;;;

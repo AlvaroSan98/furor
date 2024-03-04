@@ -7,6 +7,7 @@ open class TestWithQuestionAndAnswer(
     type: TestType,
     difficulty: DifficultType,
     question: String,
-    val answer: String): TestWithQuestion(type, difficulty, question) {
+    val answer: String,
+    val resourced: Boolean = false): TestWithQuestion(type, difficulty, question) {
 
 }
