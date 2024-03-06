@@ -29,7 +29,7 @@ class TestFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = TestFragmentBinding.inflate(layoutInflater)
-        gameViewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
+        gameViewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
         return binding.root
     }
 
