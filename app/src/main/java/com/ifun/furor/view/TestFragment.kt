@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.ifun.furor.R
 import com.ifun.furor.databinding.TestFragmentBinding
 import com.ifun.furor.model.Team
@@ -22,6 +23,7 @@ class TestFragment: Fragment() {
 
     private lateinit var binding: TestFragmentBinding
     private lateinit var gameViewModel: GameViewModel
+    private val args: TestFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +42,7 @@ class TestFragment: Fragment() {
     }
 
     private fun setUpView() {
-        gameViewModel.setTeams("POLLOSHERMANOS", listOf("Alvaro", "Javi", "Sergio"), "SUPERMEMAS", listOf("Sara", "Marta", "Lara"))
+        gameViewModel.setTeams(args.team1Name, args.team1Players.toList(), args.team2Name, args.team2Players.toList())
 
         gameViewModel.getTest().observe(viewLifecycleOwner, Observer {
             setUpTestViews(it)

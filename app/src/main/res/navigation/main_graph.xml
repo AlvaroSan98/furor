@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_graph">
+    android:id="@+id/main_graph"
+    app:startDestination="@id/teamsFragment">
 
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.ifun.furor.view.TestFragment"
+        android:label="TestFragment" >
+        <argument
+            android:name="team1Players"
+            app:argType="string[]" />
+        <argument
+            android:name="team2Players"
+            app:argType="string[]" />
+        <argument
+            android:name="team1Name"
+            app:argType="string" />
+        <argument
+            android:name="team2Name"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/teamsFragment"
+        android:name="com.ifun.furor.view.TeamsFragment"
+        android:label="TeamsFragment" >
+        <action
+            android:id="@+id/action_teamsFragment_to_testFragment"
+            app:destination="@id/testFragment"/>
+    </fragment>
 </navigation>

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ifun.furor.R
 import com.ifun.furor.databinding.TeamsFragmentBinding
 import com.ifun.furor.viewmodel.TeamsViewModel
@@ -68,9 +69,19 @@ class TeamsFragment: Fragment() {
         binding.addPlayerBtn.setOnClickListener {
             val name = binding.playerNameEt.text.toString()
             if (name.isNotBlank()) {
-                teamsViewModel.addPlayer(!binding.teamSwitch.isChecked, name)
+                teamsViewModel.addPlayer(!binding.teamSwitch.isChecked, name.trim())
             }
             binding.playerNameEt.text.clear()
+        }
+
+        binding.startGameBtn.setOnClickListener {
+            val action = TeamsFragmentDirections.actionTeamsFragmentToTestFragment(
+                teamsViewModel.getTeam1().value!!.toTypedArray(),
+                teamsViewModel.getTeam2().value!!.toTypedArray(),
+                getString(R.string.team1_name_example),
+                getString(R.string.team2_name_example)
+            )
+            findNavController().navigate(action)
         }
     }
 
