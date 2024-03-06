@@ -14,4 +14,11 @@
     <string name="title_song_emojis">Adivina el título</string>
     <string name="curiosity">¿Sabías que...?</string>
 
+    <string name="play_icon_content_description">Play icon</string>
+
+    <string name="add">Añadir</string>
+    <string name="name_example">Perro Sanches</string>
+    <string name="team1_name_example">Los pollos hermanos</string>
+    <string name="team2_name_example">Las supermemas</string>
+
 </resources>

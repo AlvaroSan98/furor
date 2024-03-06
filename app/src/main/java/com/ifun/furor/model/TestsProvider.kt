@@ -73,10 +73,11 @@ class TestsProvider(private val context: Context) {
             TestType.SONG_SOUND.value,
             TestType.TITLE_SONG_EMOJIS.value -> {
                 tests.add(
-                    TestWithQuestion(
+                    TestWithQuestionAndAnswer(
                         TestType.fromInt(array[0].toInt()),
                         DifficultType.fromInt(array[2].toInt()),
                         array[1],
+                        array[3],
                         true
                     )
                 )

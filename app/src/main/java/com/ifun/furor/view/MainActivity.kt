@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        goToFragment(TestFragment())
+        goToFragment(TeamsFragment())
     }
 
     private fun goToFragment(fragment: Fragment) {

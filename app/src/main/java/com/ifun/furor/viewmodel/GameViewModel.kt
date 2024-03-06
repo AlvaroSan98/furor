@@ -1,7 +1,6 @@
 package com.ifun.furor.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ifun.furor.model.Game
@@ -27,7 +26,8 @@ class GameViewModel: ViewModel() {
         team.postValue(game.nextTeam())
     }
 
-    fun nextTest() {
+    fun answer(correct: Boolean) {
+        game.answer(correct)
         test.postValue(game.nextTest())
         team.postValue(game.nextTeam())
     }
@@ -38,6 +38,10 @@ class GameViewModel: ViewModel() {
 
     fun getTeam(): MutableLiveData<Team> {
         return team
+    }
+
+    fun isCurrentTeamWinning(): Boolean {
+        return game.isCurrentTeamWinning()
     }
 
 }
