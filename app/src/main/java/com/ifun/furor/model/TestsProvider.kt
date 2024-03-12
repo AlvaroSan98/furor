@@ -18,11 +18,11 @@ import java.lang.Exception
 
 class TestsProvider(private val context: Context) {
 
-    fun getTests(): List<Test> {
+    fun getTests(): ArrayList<Test> {
         return getCsvTests()
     }
 
-    private fun getCsvTests(): List<Test> {
+    private fun getCsvTests(): ArrayList<Test> {
         try {
             val inputStream = context.resources.openRawResource(R.raw.tests_csv)
             val inputStreamReader = InputStreamReader(inputStream)
@@ -30,11 +30,11 @@ class TestsProvider(private val context: Context) {
             return readCsvFile(bufferedReader)
         } catch (e: Exception) {
             Log.e("TestsProvider", "getCsvTests error reading file")
-            return emptyList()
+            return ArrayList<Test>()
         }
     }
 
-    private fun readCsvFile(bufferedReader: BufferedReader): List<Test> {
+    private fun readCsvFile(bufferedReader: BufferedReader): ArrayList<Test> {
         var testsList = ArrayList<Test>()
 
         val iterator = bufferedReader.lineSequence().iterator()
