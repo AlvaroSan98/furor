@@ -4,10 +4,14 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ifun.furor.R
 import com.ifun.furor.databinding.TestFragmentBinding
 import com.ifun.furor.model.Team
@@ -16,12 +20,14 @@ import com.ifun.furor.model.tests.Test
 import com.ifun.furor.model.tests.TestWithQuestion
 import com.ifun.furor.model.tests.TestWithQuestionAndAnswer
 import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
+import com.ifun.furor.viewmodel.GameState
 import com.ifun.furor.viewmodel.GameViewModel
 
 class TestFragment: Fragment() {
 
     private lateinit var binding: TestFragmentBinding
     private lateinit var gameViewModel: GameViewModel
+    private val args: TestFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,12 +41,22 @@ class TestFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        gameViewModel.getState().observe(viewLifecycleOwner, Observer {
+            onStateChanged()
+        })
+
         setUpView()
-        gameViewModel.startGame(requireActivity().applicationContext)
+    }
+
+    private fun onStateChanged() {
+        if (gameViewModel.getState().value == GameState.LOADING) {
+            gameViewModel.setTeams(args.team1Name, args.team1Players.toList(), args.team2Name, args.team2Players.toList())
+            gameViewModel.startGame(requireActivity().applicationContext)
+        }
     }
 
     private fun setUpView() {
-        gameViewModel.setTeams("POLLOSHERMANOS", listOf("Alvaro", "Javi", "Sergio"), "SUPERMEMAS", listOf("Sara", "Marta", "Lara"))
 
         gameViewModel.getTest().observe(viewLifecycleOwner, Observer {
             setUpTestViews(it)
@@ -52,166 +68,10 @@ class TestFragment: Fragment() {
     }
 
     private fun setUpTestViews(test: Test) {
-        binding.testTitleTv.visibility = View.VISIBLE
-        when (test.type) {
-            TestType.TITLE_SONG_TEXT -> {
-                binding.testTitleTv.text = getString(R.string.title_song_text)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            }
-            TestType.AUTHOR_SONG_TEXT -> {
-                binding.testTitleTv.text = getString(R.string.author_song_text)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            }
-            TestType.CONTINUE_SONG_TEXT -> {
-                binding.testTitleTv.text = getString(R.string.continue_song_text)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            }
-            TestType.SONGS_OF_AUTHOR -> {
-                binding.testTitleTv.text = getString(R.string.songs_of_author)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
-            }
-            TestType.MIME -> {
-                binding.testTitleTv.text = getString(R.string.mime)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
-            }
-            TestType.THE_STRANGE_ONE -> {
-                binding.testTitleTv.text = getString(R.string.the_strange_one)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.VISIBLE
-                binding.option2Tv.visibility = View.VISIBLE
-                binding.option3Tv.visibility = View.VISIBLE
-                binding.option4Tv.visibility = View.VISIBLE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
-            }
-            TestType.THE_OLDEST -> {
-                binding.testTitleTv.text = getString(R.string.the_oldest)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.VISIBLE
-                binding.option2Tv.visibility = View.VISIBLE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            }
-            TestType.POTPURRI -> {
-                binding.testTitleTv.text = getString(R.string.potpurri)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
-            }
-            TestType.TITLE_SONG_EMOJIS -> {
-                binding.testTitleTv.text = getString(R.string.title_song_emojis)
-                binding.testQuestionTv.visibility = View.INVISIBLE
-                binding.testResourceIv.visibility = View.VISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            }
-            TestType.SONG_SOUND -> {
-                binding.testTitleTv.text = getString(R.string.song_sound)
-                binding.testQuestionTv.visibility = View.INVISIBLE
-                binding.testResourceIv.setImageResource(R.drawable.icon_play)
-                binding.testResourceIv.visibility = View.VISIBLE
-                binding.option1Tv.visibility = View.GONE
-                binding.option2Tv.visibility = View.GONE
-                binding.option3Tv.visibility = View.GONE
-                binding.option4Tv.visibility = View.GONE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            }
-            TestType.CURIOSITY -> {
-                binding.testTitleTv.text = getString(R.string.curiosity)
-                binding.testQuestionTv.visibility = View.VISIBLE
-                binding.testResourceIv.visibility = View.INVISIBLE
-                binding.option1Tv.visibility = View.VISIBLE
-                binding.option2Tv.visibility = View.VISIBLE
-                binding.option3Tv.visibility = View.VISIBLE
-                binding.option4Tv.visibility = View.VISIBLE
-                binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
-                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            }
-        }
-
-        if (test is TestWithQuestionAndAnswer) {
-            if (!test.resourced) {
-                binding.testQuestionTv.text = test.question
-            } else {
-                if (test.question.endsWith("sec")) {
-                    binding.testResourceIv.setImageResource(R.drawable.icon_play)
-                } else {
-                    val id = resources.getIdentifier(test.question, "drawable", activity?.applicationContext?.packageName)
-                    binding.testResourceIv.setImageResource(id)
-                }
-            }
-        } else if (test is TestWithQuestion) {
-            binding.testQuestionTv.text = test.question
-        }
-
-        if (test is TestWithQuestionAnswerAndOptions) {
-            binding.option1Tv.text = test.options[0]
-            binding.option2Tv.text = test.options[1]
-            if (test.type == TestType.CURIOSITY || test.type == TestType.THE_STRANGE_ONE) {
-                binding.option3Tv.text = test.options[2]
-                binding.option4Tv.text = test.options[3]
-            }
-        }
+        setUpTitle(test)
+        setUpQuestion(test)
+        setUpOptionsViews(test)
+        setUpBottomToolbar(test)
 
         binding.testPointsTv.text = getString(R.string.points, test.points)
         binding.testPointsTv.visibility = View.VISIBLE
@@ -231,7 +91,7 @@ class TestFragment: Fragment() {
 
     private fun initListeners(test: Test) {
         binding.bottomToolbar.nextToolbarIv.setOnClickListener {
-            getAnswer(test)
+            findNavController().navigate(R.id.action_testFragment_to_answerFragment2)
         }
 
         binding.bottomToolbar.testCheckIv.setOnClickListener {
@@ -242,8 +102,7 @@ class TestFragment: Fragment() {
             gameViewModel.answer(false)
         }
 
-        if (binding.testResourceIv.visibility == View.VISIBLE) {
-            test as TestWithQuestionAndAnswer
+        if (test is TestWithQuestionAndAnswer) {
             if (test.question.endsWith("un_sec")) {
                 val id = resources.getIdentifier(test.question, "raw", activity?.applicationContext?.packageName)
                 val mediaPlayer = MediaPlayer.create(activity?.applicationContext, id)
@@ -254,22 +113,122 @@ class TestFragment: Fragment() {
                 }
             }
         }
+
+        binding.option1Tv.setOnClickListener(onOptionClickListener(0, test, binding.option1Tv))
+        binding.option2Tv.setOnClickListener(onOptionClickListener(1, test, binding.option2Tv))
+        binding.option3Tv.setOnClickListener(onOptionClickListener(2, test, binding.option3Tv))
+        binding.option4Tv.setOnClickListener(onOptionClickListener(3, test, binding.option4Tv))
     }
 
-    private fun getAnswer(test: Test) {
-        test as TestWithQuestionAndAnswer
-        binding.testQuestionTv.text = test.answer
+    private fun onOptionClickListener(optionSelected: Int, test: Test, view: View): OnClickListener {
+        return object: OnClickListener {
+            override fun onClick(v: View?) {
+                test as TestWithQuestionAnswerAndOptions
+                if (test.options[optionSelected] == test.answer) {
+                    view.setBackgroundColor(resources.getColor(R.color.correct_option))
+                }
+                else {
+                    view.setBackgroundColor(resources.getColor(R.color.incorrect_option))
+                }
+            }
+        }
+    }
 
-        binding.testTitleTv.visibility = View.INVISIBLE
-        binding.testResourceIv.visibility = View.INVISIBLE
-        binding.testPointsTv.visibility = View.INVISIBLE
-        binding.testQuestionTv.visibility = View.VISIBLE
-        binding.bottomToolbar.nextToolbarIv.visibility = View.INVISIBLE
-        binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
-        binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
-        binding.option1Tv.visibility = View.GONE
-        binding.option2Tv.visibility = View.GONE
-        binding.option3Tv.visibility = View.GONE
-        binding.option4Tv.visibility = View.GONE
+    private fun setUpBottomToolbar(test: Test) {
+        if (test is TestWithQuestionAndAnswer) {
+            binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
+            binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
+            binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
+        } else {
+            binding.bottomToolbar.nextToolbarIv.visibility = View.INVISIBLE
+            binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
+            binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setUpOptionsViews(test: Test) {
+        if (test is TestWithQuestionAnswerAndOptions) {
+            binding.option1Tv.visibility = View.VISIBLE
+            binding.option2Tv.visibility = View.VISIBLE
+            binding.option1Tv.text = test.options[0]
+            binding.option2Tv.text = test.options[1]
+            if (test.options.size > 2) {
+                binding.option3Tv.visibility = View.VISIBLE
+                binding.option4Tv.visibility = View.VISIBLE
+                binding.option3Tv.text = test.options[2]
+                binding.option4Tv.text = test.options[3]
+            } else {
+                binding.option3Tv.visibility = View.GONE
+                binding.option4Tv.visibility = View.GONE
+            }
+        } else {
+            binding.option1Tv.visibility = View.GONE
+            binding.option2Tv.visibility = View.GONE
+            binding.option3Tv.visibility = View.GONE
+            binding.option4Tv.visibility = View.GONE
+        }
+    }
+
+    private fun setUpQuestion(test: Test) {
+        if (test is TestWithQuestionAndAnswer) {
+            if (!test.resourced) {
+                binding.testQuestionTv.visibility = View.VISIBLE
+                binding.testResourceIv.visibility = View.INVISIBLE
+                binding.testQuestionTv.text = test.question
+            } else {
+                binding.testQuestionTv.visibility = View.INVISIBLE
+                binding.testResourceIv.visibility = View.VISIBLE
+                if (test.question.endsWith("sec")) {
+                    binding.testResourceIv.setImageResource(R.drawable.icon_play)
+                } else {
+                    val id = resources.getIdentifier(test.question, "drawable", activity?.applicationContext?.packageName)
+                    binding.testResourceIv.setImageResource(id)
+                    binding.testResourceIv.scaleX
+                }
+            }
+        } else if (test is TestWithQuestion) {
+            binding.testQuestionTv.text = test.question
+            binding.testResourceIv.visibility = View.INVISIBLE
+            binding.testQuestionTv.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setUpTitle(test: Test) {
+        binding.testTitleTv.visibility = View.VISIBLE
+        when (test.type) {
+            TestType.TITLE_SONG_TEXT -> {
+                binding.testTitleTv.text = getString(R.string.title_song_text)
+            }
+            TestType.AUTHOR_SONG_TEXT -> {
+                binding.testTitleTv.text = getString(R.string.author_song_text)
+            }
+            TestType.CONTINUE_SONG_TEXT -> {
+                binding.testTitleTv.text = getString(R.string.continue_song_text)
+            }
+            TestType.SONGS_OF_AUTHOR -> {
+                binding.testTitleTv.text = getString(R.string.songs_of_author)
+            }
+            TestType.MIME -> {
+                binding.testTitleTv.text = getString(R.string.mime)
+            }
+            TestType.THE_STRANGE_ONE -> {
+                binding.testTitleTv.text = getString(R.string.the_strange_one)
+            }
+            TestType.THE_OLDEST -> {
+                binding.testTitleTv.text = getString(R.string.the_oldest)
+            }
+            TestType.POTPURRI -> {
+                binding.testTitleTv.text = getString(R.string.potpurri)
+            }
+            TestType.TITLE_SONG_EMOJIS -> {
+                binding.testTitleTv.text = getString(R.string.title_song_emojis)
+            }
+            TestType.SONG_SOUND -> {
+                binding.testTitleTv.text = getString(R.string.song_sound)
+            }
+            TestType.CURIOSITY -> {
+                binding.testTitleTv.text = getString(R.string.curiosity)
+            }
+        }
     }
 }

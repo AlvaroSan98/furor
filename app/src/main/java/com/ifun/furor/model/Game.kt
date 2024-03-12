@@ -8,7 +8,7 @@ import kotlin.random.Random
 
 class Game(private val team1: Team, private val team2: Team) {
 
-    private lateinit var tests: List<Test>
+    private lateinit var tests: ArrayList<Test>
 
     private lateinit var currentTest: Test
     private var currentTeam = team1
@@ -34,6 +34,7 @@ class Game(private val team1: Team, private val team2: Team) {
     fun answer(correct: Boolean) {
         timer?.cancel()
         finalAnswer(correct)
+        tests.remove(currentTest)
     }
 
     private fun getNextTest() {
