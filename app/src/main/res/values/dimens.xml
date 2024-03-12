@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    //Top test toolbar
+    <dimen name="top_test_toolbar_number_padding">16dp</dimen>
+
+    //Test fragment
+    <dimen name="test_fragment_title_margin_top">24dp</dimen>
+    <dimen name="test_fragment_title_margin_start">16dp</dimen>
+    <dimen name="test_fragment_title_margin_end">16dp</dimen>
+    <dimen name="test_fragment_question_margin_top">32dp</dimen>
+    <dimen name="test_fragment_question_margin_start">12dp</dimen>
+    <dimen name="test_fragment_question_margin_end">12dp</dimen>
+    <dimen name="test_fragment_points_margin_bottom">32dp</dimen>
+    <dimen name="test_fragment_progressbar_margin_bottom">32dp</dimen>
+    <dimen name="test_fragment_progressbar_size">60dp</dimen>
+
+    //Bottom test toolbar
+    <dimen name="bottom_test_toolbar_icons_padding">16dp</dimen>
+    <dimen name="bottom_test_toolbar_icons_margin_bottom">32dp</dimen>
+    <dimen name="bottom_test_toolbar_icons_margin_end">32dp</dimen>
+    <dimen name="bottom_test_toolbar_icons_margin_start">32dp</dimen>
+    <dimen name="bottom_test_toolbar_icons_size">80dp</dimen>
+</resources>
