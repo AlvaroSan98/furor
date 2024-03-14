@@ -44,8 +44,6 @@ class AnswerFragment: Fragment() {
             findNavController().navigate(R.id.action_answerFragment_to_testFragment)
         }
 
-        binding.bottomToolbarAnswer.nextToolbarIv.visibility = View.INVISIBLE
-
         binding.answerTv.text = gameViewModel.getCorrectAnswer()
     }
 

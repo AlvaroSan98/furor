@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.CountDownTimer
 import com.ifun.furor.model.enums.Operations
 import com.ifun.furor.model.tests.Test
+import com.ifun.furor.model.tests.TestWithQuestionAndAnswer
+import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
 import kotlin.random.Random
 
 class Game(private val team1: Team, private val team2: Team) {
@@ -35,6 +37,21 @@ class Game(private val team1: Team, private val team2: Team) {
         timer?.cancel()
         finalAnswer(correct)
         tests.remove(currentTest)
+    }
+
+    fun isTestWithAnswer(): Boolean {
+        return currentTest is TestWithQuestionAndAnswer
+    }
+
+    fun getCorrectOption(): Int {
+        val testAsOption = currentTest as TestWithQuestionAnswerAndOptions
+        var index = 0
+        while (index < testAsOption.options.size) {
+            if (testAsOption.answer == testAsOption.options[index])
+                return index
+            index++
+        }
+        return -1
     }
 
     private fun getNextTest() {
