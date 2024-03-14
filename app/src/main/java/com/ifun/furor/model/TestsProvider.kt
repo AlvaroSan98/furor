@@ -83,15 +83,25 @@ class TestsProvider(private val context: Context) {
                 )
             }
             TestType.THE_STRANGE_ONE.value,
-            TestType.CURIOSITY.value,
+            TestType.CURIOSITY.value -> {
+                tests.add(
+                    TestWithQuestionAnswerAndOptions(
+                        TestType.fromInt(array[0].toInt()),
+                        DifficultType.fromInt(array[2].toInt()),
+                        array[1],
+                        array[3],
+                        listOf(array[4], array[5], array[6], array[7])
+                    )
+                )
+            }
             TestType.THE_OLDEST.value -> {
                 tests.add(
                     TestWithQuestionAnswerAndOptions(
-                    TestType.fromInt(array[0].toInt()),
-                    DifficultType.fromInt(array[2].toInt()),
-                    array[1],
-                    array[3],
-                    listOf(array[4], array[5], array[6], array[7]))
+                        TestType.fromInt(array[0].toInt()),
+                        DifficultType.fromInt(array[2].toInt()),
+                        array[1],
+                        array[3],
+                        listOf(array[4], array[5]))
                 )
             }
         }

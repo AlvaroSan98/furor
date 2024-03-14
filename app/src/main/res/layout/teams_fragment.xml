@@ -3,99 +3,168 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/main_background">
 
-    <EditText
-        android:id="@+id/player_name_et"
+
+
+    <ImageView
+        android:id="@+id/arc_first_team_iv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/name_example"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/add_player_btn"
-        app:layout_constraintEnd_toStartOf="@id/team_switch"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/team_switch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/player_name_et"
+        android:scaleType="centerCrop"
+        android:background="@color/team_1_shadow_color"
+        app:tint="@color/team_1_color"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/player_name_et" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arc" />
 
-    <Button
-        android:id="@+id/add_player_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/team_switch"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="@+id/player_name_et" />
 
     <TextView
         android:id="@+id/team1_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:text="@string/team1_name_example"
         android:textAlignment="center"
         android:textSize="24sp"
-        android:text="@string/team1_name_example"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/arc_first_team_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/arc_first_team_iv" />
 
-    <TextView
-        android:id="@+id/team1_players_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:padding="16dp"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/layout_team_1_players"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:background="@color/team_1_color"
+        app:flexWrap="wrap"
+        android:padding="20dp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/team1_title_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/arc_first_team_iv">
+
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <ImageView
+        android:id="@+id/arc_second_team_iv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_team_1_players"
+        app:srcCompat="@drawable/arc"
+        android:background="@color/team_2_shadow_color"
+        app:tint="@color/team_2_color" />
+
 
     <TextView
         android:id="@+id/team2_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:text="@string/team2_name_example"
-        android:textSize="24sp"
         android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/arc_second_team_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/team1_players_tv" />
+        app:layout_constraintTop_toTopOf="@id/arc_second_team_iv" />
 
-    <TextView
-        android:id="@+id/team2_players_tv"
-        android:layout_width="wrap_content"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/layout_team_2_players"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:background="@color/team_2_color"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:gravity="center"
+        app:flexWrap="wrap"
+        app:flow_maxElementsWrap="12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arc_second_team_iv">
+
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <Button
+        android:id="@+id/start_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        android:textAlignment="center"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/team2_title_tv"
-        app:layout_constraintStart_toStartOf="@+id/team2_title_tv"
-        app:layout_constraintTop_toBottomOf="@+id/team2_title_tv" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/start_game"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/main_background_highlight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/start_game_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="24dp"
+    <EditText
+        android:id="@+id/player_name_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="32dp"
+        android:ems="10"
+        android:inputType="textCapWords"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/start_btn"
+        app:layout_constraintEnd_toStartOf="@+id/add_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Álvaro" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_teams"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:trackTint="@color/main_background_highlight"
         app:layout_constraintBottom_toTopOf="@+id/player_name_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_play" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_team_2_players"
+        android:theme="@style/TeamSwitch"/>
+
+    <ImageView
+        android:id="@+id/add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/player_name_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/player_name_et"
+        app:srcCompat="@drawable/icon_add" />
+
+    <TextView
+        android:id="@+id/team_1_switch_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/switch_teams"
+        app:layout_constraintEnd_toStartOf="@+id/switch_teams"
+        app:layout_constraintTop_toTopOf="@+id/switch_teams"
+        android:text="@string/team1_name_example"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/team_2_switch_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/switch_teams"
+        app:layout_constraintStart_toEndOf="@+id/switch_teams"
+        app:layout_constraintTop_toTopOf="@+id/switch_teams"
+        android:text="@string/team2_name_example"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

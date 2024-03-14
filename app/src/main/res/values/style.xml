@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TeamSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/team_2_color</item>
+        <item name="colorSwitchThumbNormal">@color/team_1_color</item>
+        <item name="android:colorForeground">@color/team_1_color</item>
+    </style>
+    
+</resources>

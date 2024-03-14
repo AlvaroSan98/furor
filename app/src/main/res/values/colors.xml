@@ -8,7 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="option_not_selected">#D09EA59D</color>
+    <color name="option_not_selected">@color/main_background</color>
     <color name="correct_option">#C960E64D</color>
     <color name="incorrect_option">#D0CF4C4C</color>
+
+    <color name="team_1_color">#D9D1C7</color>
+    <color name="team_1_shadow_color">#A19B94</color>
+    <color name="team_2_color">#D392B5</color>
+    <color name="team_2_shadow_color">#93647D</color>
+    <color name="main_background">#D5E5F2</color>
+    <color name="main_background_highlight">#9BA6AF</color>
 </resources>

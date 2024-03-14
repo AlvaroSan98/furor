@@ -2,10 +2,13 @@ package com.ifun.furor.view
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +18,7 @@ import androidx.navigation.fragment.navArgs
 import com.ifun.furor.R
 import com.ifun.furor.databinding.TestFragmentBinding
 import com.ifun.furor.model.Team
+import com.ifun.furor.model.enums.TestState
 import com.ifun.furor.model.enums.TestType
 import com.ifun.furor.model.tests.Test
 import com.ifun.furor.model.tests.TestWithQuestion
@@ -22,6 +26,7 @@ import com.ifun.furor.model.tests.TestWithQuestionAndAnswer
 import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
 import com.ifun.furor.viewmodel.GameState
 import com.ifun.furor.viewmodel.GameViewModel
+import java.util.concurrent.Executor
 
 class TestFragment: Fragment() {
 
@@ -42,7 +47,7 @@ class TestFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        gameViewModel.getState().observe(viewLifecycleOwner, Observer {
+        gameViewModel.getGameState().observe(viewLifecycleOwner, Observer {
             onStateChanged()
         })
 
@@ -50,7 +55,7 @@ class TestFragment: Fragment() {
     }
 
     private fun onStateChanged() {
-        if (gameViewModel.getState().value == GameState.LOADING) {
+        if (gameViewModel.getGameState().value == GameState.LOADING) {
             gameViewModel.setTeams(args.team1Name, args.team1Players.toList(), args.team2Name, args.team2Players.toList())
             gameViewModel.startGame(requireActivity().applicationContext)
         }
@@ -65,13 +70,32 @@ class TestFragment: Fragment() {
         gameViewModel.getTeam().observe(viewLifecycleOwner, Observer {
             setUpTeamViews(it)
         })
+
+        gameViewModel.getTestState().observe(viewLifecycleOwner, Observer {
+            setUpBottomToolbar(it)
+            setUpPointsView(it)
+        })
+    }
+
+    private fun setUpPointsView(state: TestState?) {
+        if (state == TestState.QUESTION) {
+            binding.testPointsTv.visibility = View.VISIBLE
+            binding.ovalPointsIv.visibility = View.VISIBLE
+        } else {
+            binding.testPointsTv.visibility = View.INVISIBLE
+            binding.ovalPointsIv.visibility = View.INVISIBLE
+        }
     }
 
     private fun setUpTestViews(test: Test) {
         setUpTitle(test)
         setUpQuestion(test)
         setUpOptionsViews(test)
-        setUpBottomToolbar(test)
+
+        binding.testAnswerTv.visibility = View.INVISIBLE
+        if (test is TestWithQuestionAndAnswer) {
+            binding.testAnswerTv.text = test.answer
+        }
 
         binding.testPointsTv.text = getString(R.string.points, test.points)
         binding.testPointsTv.visibility = View.VISIBLE
@@ -81,17 +105,29 @@ class TestFragment: Fragment() {
 
     private fun setUpTeamViews(team: Team) {
         binding.topToolbar.currentTeamTv.text = team.getName()
+
         binding.topToolbar.teamPointsTv.text = team.getPoints().toString()
+
         if (gameViewModel.isCurrentTeamWinning()) {
             binding.topToolbar.gameRankingTv.text = "1º"
         } else {
             binding.topToolbar.gameRankingTv.text = "2º"
         }
+
+        val color: Int = if (team.getName() == args.team1Name) {
+            R.color.team_1_color
+        } else {
+            R.color.team_2_color
+        }
+        binding.mainTestLayout.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, color))
     }
 
     private fun initListeners(test: Test) {
-        binding.bottomToolbar.nextToolbarIv.setOnClickListener {
-            findNavController().navigate(R.id.action_testFragment_to_answerFragment2)
+        binding.ovalLensIv.setOnClickListener {
+            binding.ovalLensIv.visibility = View.INVISIBLE
+            binding.lensIv.visibility = View.INVISIBLE
+            binding.testAnswerTv.visibility = View.VISIBLE
+            gameViewModel.changeTestState(TestState.ANSWER)
         }
 
         binding.bottomToolbar.testCheckIv.setOnClickListener {
@@ -114,40 +150,82 @@ class TestFragment: Fragment() {
             }
         }
 
-        binding.option1Tv.setOnClickListener(onOptionClickListener(0, test, binding.option1Tv))
-        binding.option2Tv.setOnClickListener(onOptionClickListener(1, test, binding.option2Tv))
-        binding.option3Tv.setOnClickListener(onOptionClickListener(2, test, binding.option3Tv))
-        binding.option4Tv.setOnClickListener(onOptionClickListener(3, test, binding.option4Tv))
+        binding.option1Tv.setOnClickListener(onOptionClickListener(0, binding.option1Tv))
+        binding.option2Tv.setOnClickListener(onOptionClickListener(1, binding.option2Tv))
+        binding.option3Tv.setOnClickListener(onOptionClickListener(2, binding.option3Tv))
+        binding.option4Tv.setOnClickListener(onOptionClickListener(3, binding.option4Tv))
     }
 
-    private fun onOptionClickListener(optionSelected: Int, test: Test, view: View): OnClickListener {
-        return object: OnClickListener {
-            override fun onClick(v: View?) {
-                test as TestWithQuestionAnswerAndOptions
-                if (test.options[optionSelected] == test.answer) {
-                    view.setBackgroundColor(resources.getColor(R.color.correct_option))
-                }
-                else {
-                    view.setBackgroundColor(resources.getColor(R.color.incorrect_option))
-                }
+    private fun onOptionClickListener(optionSelected: Int, view: View): OnClickListener {
+        return OnClickListener {
+            val correctOption = gameViewModel.getCorrectOption()
+            var selectedIsCorrect = false
+            if (optionSelected == correctOption) {
+                view.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.correct_option))
+                selectedIsCorrect = true
+            } else {
+                paintAllOptions(correctOption)
+            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                gameViewModel.answer(selectedIsCorrect)
+                paintAllOptions(-1)
+                binding.bottomToolbar.mainBottomToolbarLayout.visibility = View.VISIBLE
+            }, 1000)
+        }
+    }
+
+    private fun paintAllOptions(correctOption: Int) {
+        when (correctOption) {
+            0 -> {
+                binding.option1Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.correct_option))
+                binding.option2Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option3Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option4Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+            }
+            1 -> {
+                binding.option1Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option2Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.correct_option))
+                binding.option3Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option4Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+            }
+            2 -> {
+                binding.option1Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option2Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option3Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.correct_option))
+                binding.option4Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+            }
+            3 -> {
+                binding.option1Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option2Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option3Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.incorrect_option))
+                binding.option4Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.correct_option))
+            }
+            else -> {
+                binding.option1Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.option_not_selected))
+                binding.option2Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.option_not_selected))
+                binding.option3Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.option_not_selected))
+                binding.option4Tv.setBackgroundColor(ContextCompat.getColor(requireActivity().applicationContext, R.color.option_not_selected))
             }
         }
     }
 
-    private fun setUpBottomToolbar(test: Test) {
-        if (test is TestWithQuestionAndAnswer) {
-            binding.bottomToolbar.nextToolbarIv.visibility = View.VISIBLE
+    private fun setUpBottomToolbar(state: TestState?) {
+        if (state == TestState.QUESTION) {
             binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
+            binding.bottomToolbar.ovalFailedIv.visibility = View.INVISIBLE
             binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
+            binding.bottomToolbar.ovalCorrectIv.visibility = View.INVISIBLE
         } else {
-            binding.bottomToolbar.nextToolbarIv.visibility = View.INVISIBLE
             binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
             binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
+            binding.bottomToolbar.ovalCorrectIv.visibility = View.VISIBLE
+            binding.bottomToolbar.ovalFailedIv.visibility = View.VISIBLE
         }
     }
 
     private fun setUpOptionsViews(test: Test) {
         if (test is TestWithQuestionAnswerAndOptions) {
+            binding.bottomToolbar.mainBottomToolbarLayout.visibility = View.GONE
             binding.option1Tv.visibility = View.VISIBLE
             binding.option2Tv.visibility = View.VISIBLE
             binding.option1Tv.text = test.options[0]
@@ -186,10 +264,19 @@ class TestFragment: Fragment() {
                     binding.testResourceIv.scaleX
                 }
             }
+            if (test !is TestWithQuestionAnswerAndOptions) {
+                binding.ovalLensIv.visibility = View.VISIBLE
+                binding.lensIv.visibility = View.VISIBLE
+            } else {
+                binding.ovalLensIv.visibility = View.INVISIBLE
+                binding.lensIv.visibility = View.INVISIBLE
+            }
         } else if (test is TestWithQuestion) {
             binding.testQuestionTv.text = test.question
             binding.testResourceIv.visibility = View.INVISIBLE
             binding.testQuestionTv.visibility = View.VISIBLE
+            binding.ovalLensIv.visibility = View.INVISIBLE
+            binding.lensIv.visibility = View.INVISIBLE
         }
     }
 

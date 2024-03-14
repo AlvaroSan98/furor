@@ -6,19 +6,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ifun.furor.model.Game
 import com.ifun.furor.model.Team
+import com.ifun.furor.model.enums.TestState
 import com.ifun.furor.model.tests.Test
+import com.ifun.furor.model.tests.TestWithQuestion
 import com.ifun.furor.model.tests.TestWithQuestionAndAnswer
+import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
 
 class GameViewModel: ViewModel() {
 
     private val test = MutableLiveData<Test>()
     private val team = MutableLiveData<Team>()
-    private val state = MutableLiveData<GameState>()
+    private val gameState = MutableLiveData<GameState>()
+    private val testState = MutableLiveData<TestState>()
 
     private lateinit var game: Game
 
     init {
-        state.postValue(GameState.LOADING)
+        gameState.postValue(GameState.LOADING)
     }
 
     fun setTeams(team1name: String, team1players: List<String>, team2name: String, team2players: List<String>) {
@@ -31,13 +35,15 @@ class GameViewModel: ViewModel() {
         game.startGame(context)
         test.postValue(game.nextTest())
         team.postValue(game.nextTeam())
-        state.postValue(GameState.STARTED)
+        gameState.postValue(GameState.STARTED)
+        testState.postValue(chooseTestState())
     }
 
     fun answer(correct: Boolean) {
         game.answer(correct)
         test.postValue(game.nextTest())
         team.postValue(game.nextTeam())
+        testState.postValue(chooseTestState())
     }
 
     fun getTest(): MutableLiveData<Test> {
@@ -57,8 +63,28 @@ class GameViewModel: ViewModel() {
         return test.answer
     }
 
-    fun getState(): LiveData<GameState> {
-        return state
+    fun getGameState(): LiveData<GameState> {
+        return gameState
+    }
+
+    fun getTestState(): LiveData<TestState> {
+        return testState
+    }
+
+    fun changeTestState(state: TestState) {
+        testState.postValue(state)
+    }
+
+    fun getCorrectOption(): Int {
+        return game.getCorrectOption()
+    }
+
+    private fun chooseTestState(): TestState {
+        return if (game.isTestWithAnswer()) {
+            TestState.QUESTION
+        } else {
+            TestState.ANSWER
+        }
     }
 
 }

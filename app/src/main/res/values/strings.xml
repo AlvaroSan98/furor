@@ -20,5 +20,6 @@
     <string name="name_example">Perro Sanches</string>
     <string name="team1_name_example">Los pollos hermanos</string>
     <string name="team2_name_example">Las supermemas</string>
+    <string name="start_game">Comenzar a jugar</string>
 
 </resources>
