@@ -2,12 +2,14 @@ package com.ifun.furor.view
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -33,6 +35,8 @@ class TestFragment: Fragment() {
     private lateinit var binding: TestFragmentBinding
     private lateinit var gameViewModel: GameViewModel
     private val args: TestFragmentArgs by navArgs()
+    private lateinit var countDownTimer: CountDownTimer
+    private var isRunning = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,18 +66,21 @@ class TestFragment: Fragment() {
     }
 
     private fun setUpView() {
+        gameViewModel.getTestState().observe(viewLifecycleOwner, Observer {
+            setUpBottomToolbar(it)
+            setUpPointsView(it)
+            if (it == TestState.ANSWER) {
+                cancelTimerIfIsRunning()
+            }
+        })
 
         gameViewModel.getTest().observe(viewLifecycleOwner, Observer {
+            cancelTimerIfIsRunning()
             setUpTestViews(it)
         })
 
         gameViewModel.getTeam().observe(viewLifecycleOwner, Observer {
             setUpTeamViews(it)
-        })
-
-        gameViewModel.getTestState().observe(viewLifecycleOwner, Observer {
-            setUpBottomToolbar(it)
-            setUpPointsView(it)
         })
     }
 
@@ -91,6 +98,7 @@ class TestFragment: Fragment() {
         setUpTitle(test)
         setUpQuestion(test)
         setUpOptionsViews(test)
+        startTimer(test)
 
         binding.testAnswerTv.visibility = View.INVISIBLE
         if (test is TestWithQuestionAndAnswer) {
@@ -211,10 +219,10 @@ class TestFragment: Fragment() {
 
     private fun setUpBottomToolbar(state: TestState?) {
         if (state == TestState.QUESTION) {
-            binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
-            binding.bottomToolbar.ovalFailedIv.visibility = View.INVISIBLE
-            binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
-            binding.bottomToolbar.ovalCorrectIv.visibility = View.INVISIBLE
+            binding.bottomToolbar.testFailedIv.visibility = View.GONE
+            binding.bottomToolbar.ovalFailedIv.visibility = View.GONE
+            binding.bottomToolbar.testCheckIv.visibility = View.GONE
+            binding.bottomToolbar.ovalCorrectIv.visibility = View.GONE
         } else {
             binding.bottomToolbar.testFailedIv.visibility = View.VISIBLE
             binding.bottomToolbar.testCheckIv.visibility = View.VISIBLE
@@ -258,10 +266,11 @@ class TestFragment: Fragment() {
                 binding.testResourceIv.visibility = View.VISIBLE
                 if (test.question.endsWith("sec")) {
                     binding.testResourceIv.setImageResource(R.drawable.icon_play)
+                    binding.testResourceIv.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 } else {
                     val id = resources.getIdentifier(test.question, "drawable", activity?.applicationContext?.packageName)
                     binding.testResourceIv.setImageResource(id)
-                    binding.testResourceIv.scaleX
+                    binding.testResourceIv.scaleType = ImageView.ScaleType.CENTER_CROP
                 }
             }
             if (test !is TestWithQuestionAnswerAndOptions) {
@@ -316,6 +325,34 @@ class TestFragment: Fragment() {
             TestType.CURIOSITY -> {
                 binding.testTitleTv.text = getString(R.string.curiosity)
             }
+        }
+    }
+
+    private fun startTimer(test: Test) {
+        if (test.getTimeMillis().toInt() != 0) {
+            binding.testTimePb.visibility = View.VISIBLE
+            countDownTimer = object : CountDownTimer(test.getTimeMillis(), 50) {
+                override fun onTick(millisUntilFinished: Long) {
+                    isRunning = true
+                    binding.testTimePb.progress =
+                        ((millisUntilFinished * 100) / test.getTimeMillis()).toInt()
+                }
+
+                override fun onFinish() {
+                    binding.testTimePb.progress = 0
+                    isRunning = false
+                }
+
+            }
+            countDownTimer.start()
+        }
+    }
+
+    private fun cancelTimerIfIsRunning() {
+        if (isRunning) {
+            countDownTimer.cancel()
+            binding.testTimePb.visibility = View.INVISIBLE
+            isRunning = false
         }
     }
 }
