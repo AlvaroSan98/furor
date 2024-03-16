@@ -50,28 +50,20 @@
         app:layout_constraintTop_toBottomOf="@+id/test_title_tv"
         tools:text="Dónde están las gatas que no hablan y tiran..." />
 
-    <include
-        android:id="@+id/bottom_toolbar"
-        layout="@layout/bottom_test_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/test_resource_iv"
-        android:layout_width="344dp"
-        android:layout_height="97dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:contentDescription="@string/play_icon_content_description"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="@+id/test_question_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/test_question_tv"
-        app:srcCompat="@drawable/icon_play" />
+        app:srcCompat="@drawable/icon_play"/>
 
     <Button
         android:id="@+id/option1_tv"
@@ -82,7 +74,7 @@
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/oval_lens_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -96,9 +88,9 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/option_not_selected"
         android:text="TextView"
-        android:textSize="16sp"
-        android:visibility="visible"
         android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/option1_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -112,9 +104,9 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/option_not_selected"
         android:text="TextView"
-        android:textSize="16sp"
-        android:visibility="visible"
         android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/option2_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -128,9 +120,9 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/option_not_selected"
         android:text="TextView"
-        android:textSize="16sp"
-        android:visibility="visible"
         android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/option3_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -142,7 +134,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/test_time_pb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/oval_points" />
@@ -200,6 +192,29 @@
         app:layout_constraintStart_toStartOf="@id/oval_lens_iv"
         app:layout_constraintEnd_toEndOf="@id/oval_lens_iv"
         tools:text="Pa' lante" />
+
+    <include
+        android:id="@+id/bottom_toolbar"
+        layout="@layout/bottom_test_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/test_time_pb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:progressDrawable="@drawable/time_progress_bar"
+        android:progress="10"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        app:layout_constraintBottom_toTopOf="@id/bottom_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
