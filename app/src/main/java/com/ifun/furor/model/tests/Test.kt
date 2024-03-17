@@ -9,7 +9,6 @@ open class Test(val type: TestType, val difficulty: DifficultType) {
 
     val seconds = getTimeMillis() / 1000
     val points = getTestPoints()
-    val operation = Operations.ADD
 
     fun getTimeMillis(): Long {
         return when (type) {
@@ -37,15 +36,5 @@ open class Test(val type: TestType, val difficulty: DifficultType) {
             DifficultType.DIFFICULT -> 20
             DifficultType.EXPERT -> 40
         }
-    }
-
-    private fun getTestOperation(): Operations {
-        val randomOperation = Random.nextInt(10)
-        val operation = if (randomOperation in 0..4) {
-            Operations.ADD
-        } else {
-            Operations.REMOVE
-        }
-        return operation
     }
 }

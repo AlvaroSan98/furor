@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/main_bottom_toolbar_layout">
+
+
+    <ImageView
+        android:id="@+id/oval_failed_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/test_failed_iv"
+        app:layout_constraintBottom_toBottomOf="@id/test_failed_iv"
+        app:layout_constraintStart_toStartOf="@id/test_failed_iv"
+        app:layout_constraintEnd_toEndOf="@id/test_failed_iv"
+        app:srcCompat="@drawable/oval_answer" />
+
+
+    <ImageView
+        android:id="@+id/oval_correct_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/test_check_iv"
+        app:layout_constraintBottom_toBottomOf="@id/test_check_iv"
+        app:layout_constraintStart_toStartOf="@id/test_check_iv"
+        app:layout_constraintEnd_toEndOf="@id/test_check_iv"
+        app:srcCompat="@drawable/oval_answer" />
 
     <ImageButton
         android:id="@+id/test_check_iv"
         android:layout_width="@dimen/bottom_test_toolbar_icons_size"
         android:layout_height="@dimen/bottom_test_toolbar_icons_size"
         android:src="@drawable/icon_tick"
-        android:layout_marginBottom="@dimen/bottom_test_toolbar_icons_margin_bottom"
         android:layout_marginEnd="@dimen/test_fragment_question_margin_end"
         android:padding="@dimen/bottom_test_toolbar_icons_padding"
         android:backgroundTint="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+
     <ImageView
         android:id="@+id/test_failed_iv"
         android:layout_width="@dimen/bottom_test_toolbar_icons_size"
         android:layout_height="@dimen/bottom_test_toolbar_icons_size"
-        android:layout_marginBottom="@dimen/bottom_test_toolbar_icons_margin_bottom"
         android:layout_marginStart="@dimen/test_fragment_question_margin_start"
         android:padding="@dimen/bottom_test_toolbar_icons_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/icon_cross" />
 
-    <ImageView
-        android:id="@+id/next_toolbar_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="32dp"
-        android:padding="@dimen/bottom_test_toolbar_icons_padding"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/test_check_iv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_next" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

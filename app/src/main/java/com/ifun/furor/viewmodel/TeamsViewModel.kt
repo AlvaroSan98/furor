@@ -21,11 +21,21 @@ class TeamsViewModel: ViewModel() {
     }
 
     fun addPlayer(team1: Boolean, name: String) {
-        if (team1) {
+        if (team1 && team_1_players.size < 11) {
             team_1_players.add(name)
             team_1_list.postValue(team_1_players)
-        } else {
+        } else if (!team1 && team_2_players.size < 11){
             team_2_players.add(name)
+            team_2_list.postValue(team_2_players)
+        }
+    }
+
+    fun removePlayer(team1: Boolean, name: String) {
+        if (team1) {
+            team_1_players.remove(name)
+            team_1_list.postValue(team_1_players)
+        } else {
+            team_2_players.remove(name)
             team_2_list.postValue(team_2_players)
         }
     }

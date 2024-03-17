@@ -21,4 +21,8 @@
     <dimen name="bottom_test_toolbar_icons_margin_end">32dp</dimen>
     <dimen name="bottom_test_toolbar_icons_margin_start">32dp</dimen>
     <dimen name="bottom_test_toolbar_icons_size">80dp</dimen>
+
+    //Teams fragment
+    <dimen name="players_layout_padding">4dp</dimen>
+    <dimen name="player_text_padding_left">2dp</dimen>
 </resources>
