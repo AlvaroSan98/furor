@@ -6,11 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ifun.furor.model.Game
 import com.ifun.furor.model.Team
+import com.ifun.furor.model.enums.GameState
 import com.ifun.furor.model.enums.TestState
 import com.ifun.furor.model.tests.Test
-import com.ifun.furor.model.tests.TestWithQuestion
 import com.ifun.furor.model.tests.TestWithQuestionAndAnswer
-import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
 
 class GameViewModel: ViewModel() {
 
