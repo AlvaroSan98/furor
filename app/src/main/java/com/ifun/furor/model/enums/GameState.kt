@@ -1,4 +1,4 @@
-package com.ifun.furor.viewmodel
+package com.ifun.furor.model.enums
 
 enum class GameState {
     LOADING,

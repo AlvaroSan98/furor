@@ -35,14 +35,28 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:textStyle="bold"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/game_ranking_tv"
         app:layout_constraintEnd_toStartOf="@+id/team_points_tv"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/game_ranking_tv"
-        app:layout_constraintTop_toTopOf="parent"
 
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="Equipo 1" />
+
+    <TextView
+        android:id="@+id/added_points_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:padding="@dimen/top_test_toolbar_number_padding"
+        app:layout_constraintBottom_toBottomOf="@+id/team_points_tv"
+        app:layout_constraintEnd_toEndOf="@+id/team_points_tv"
+        app:layout_constraintStart_toStartOf="@+id/team_points_tv"
+        app:layout_constraintTop_toTopOf="@+id/team_points_tv"
+        tools:text="+25" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

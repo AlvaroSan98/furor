@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ifun.furor.R
 import com.ifun.furor.databinding.TestFragmentBinding
@@ -26,9 +27,8 @@ import com.ifun.furor.model.tests.Test
 import com.ifun.furor.model.tests.TestWithQuestion
 import com.ifun.furor.model.tests.TestWithQuestionAndAnswer
 import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
-import com.ifun.furor.viewmodel.GameState
+import com.ifun.furor.model.enums.GameState
 import com.ifun.furor.viewmodel.GameViewModel
-import java.util.concurrent.Executor
 
 class TestFragment: Fragment() {
 
@@ -139,11 +139,11 @@ class TestFragment: Fragment() {
         }
 
         binding.bottomToolbar.testCheckIv.setOnClickListener {
-            gameViewModel.answer(true)
+            startPointsAddedAnimation(test, true)
         }
 
         binding.bottomToolbar.testFailedIv.setOnClickListener {
-            gameViewModel.answer(false)
+            startPointsAddedAnimation(test, false)
         }
 
         if (test is TestWithQuestionAndAnswer) {
@@ -158,13 +158,13 @@ class TestFragment: Fragment() {
             }
         }
 
-        binding.option1Tv.setOnClickListener(onOptionClickListener(0, binding.option1Tv))
-        binding.option2Tv.setOnClickListener(onOptionClickListener(1, binding.option2Tv))
-        binding.option3Tv.setOnClickListener(onOptionClickListener(2, binding.option3Tv))
-        binding.option4Tv.setOnClickListener(onOptionClickListener(3, binding.option4Tv))
+        binding.option1Tv.setOnClickListener(onOptionClickListener(0, binding.option1Tv, test))
+        binding.option2Tv.setOnClickListener(onOptionClickListener(1, binding.option2Tv, test))
+        binding.option3Tv.setOnClickListener(onOptionClickListener(2, binding.option3Tv, test))
+        binding.option4Tv.setOnClickListener(onOptionClickListener(3, binding.option4Tv, test))
     }
 
-    private fun onOptionClickListener(optionSelected: Int, view: View): OnClickListener {
+    private fun onOptionClickListener(optionSelected: Int, view: View, test: Test): OnClickListener {
         return OnClickListener {
             val correctOption = gameViewModel.getCorrectOption()
             var selectedIsCorrect = false
@@ -174,11 +174,7 @@ class TestFragment: Fragment() {
             } else {
                 paintAllOptions(correctOption)
             }
-            Handler(Looper.getMainLooper()).postDelayed({
-                gameViewModel.answer(selectedIsCorrect)
-                paintAllOptions(-1)
-                binding.bottomToolbar.mainBottomToolbarLayout.visibility = View.VISIBLE
-            }, 1000)
+            startPointsAddedAnimation(test, selectedIsCorrect)
         }
     }
 
@@ -354,5 +350,41 @@ class TestFragment: Fragment() {
             binding.testTimePb.visibility = View.INVISIBLE
             isRunning = false
         }
+    }
+    private fun startPointsAddedAnimation(test: Test, correct: Boolean) {
+        val animation = AnimationUtils.loadAnimation(requireActivity().applicationContext, R.anim.fade_out)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                if (correct) {
+                    binding.topToolbar.addedPointsTv.text = "+${test.points}"
+                    binding.topToolbar.addedPointsTv.visibility = View.VISIBLE
+
+                    val currentPoints = binding.topToolbar.teamPointsTv.text.toString().toInt()
+                    binding.topToolbar.teamPointsTv.text = (currentPoints + test.points).toString()
+                } else {
+                    binding.topToolbar.addedPointsTv.text = "+0"
+                }
+                binding.bottomToolbar.testCheckIv.visibility = View.INVISIBLE
+                binding.bottomToolbar.ovalCorrectIv.visibility = View.INVISIBLE
+                binding.bottomToolbar.testFailedIv.visibility = View.INVISIBLE
+                binding.bottomToolbar.ovalFailedIv.visibility = View.INVISIBLE
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.topToolbar.addedPointsTv.visibility = View.INVISIBLE
+                gameViewModel.answer(correct)
+
+                if (test is TestWithQuestionAnswerAndOptions) {
+                    paintAllOptions(-1)
+                    binding.bottomToolbar.mainBottomToolbarLayout.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+                Log.e("TestFragment", "Repeat animation error")
+            }
+
+        })
+        binding.topToolbar.addedPointsTv.startAnimation(animation)
     }
 }
