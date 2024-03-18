@@ -22,12 +22,13 @@
         android:id="@+id/test_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_fragment_question_margin_start"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="@dimen/test_fragment_question_margin_end"
+        android:layout_marginEnd="24dp"
         android:gravity="center"
         android:maxLines="2"
         android:textSize="32sp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_toolbar"
@@ -43,11 +44,12 @@
         android:layout_marginEnd="32dp"
         android:gravity="center"
         android:textSize="32sp"
+        android:textColor="@color/black"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/oval_lens_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/test_title_tv"
+        app:layout_constraintTop_toBottomOf="@+id/test_info_iv"
         tools:text="Dónde están las gatas que no hablan y tiran..." />
 
     <ImageView
@@ -186,6 +188,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="32sp"
+        android:textColor="@color/black"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="@id/oval_lens_iv"
         app:layout_constraintBottom_toBottomOf="@id/oval_lens_iv"
@@ -215,6 +218,16 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/test_info_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/test_title_tv"
+        app:layout_constraintStart_toStartOf="@+id/test_title_tv"
+        app:layout_constraintTop_toBottomOf="@+id/test_title_tv"
+        app:srcCompat="@drawable/icon_info" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

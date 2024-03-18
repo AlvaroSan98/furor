@@ -1,5 +1,7 @@
 package com.ifun.furor.view
 
+import android.app.ActionBar.LayoutParams
+import android.app.Dialog
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,9 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -146,6 +151,10 @@ class TestFragment: Fragment() {
             startPointsAddedAnimation(test, false)
         }
 
+        binding.testInfoIv.setOnClickListener {
+            showInfoDialog(test)
+        }
+
         if (test is TestWithQuestionAndAnswer) {
             if (test.question.endsWith("un_sec")) {
                 val id = resources.getIdentifier(test.question, "raw", activity?.applicationContext?.packageName)
@@ -162,6 +171,40 @@ class TestFragment: Fragment() {
         binding.option2Tv.setOnClickListener(onOptionClickListener(1, binding.option2Tv, test))
         binding.option3Tv.setOnClickListener(onOptionClickListener(2, binding.option3Tv, test))
         binding.option4Tv.setOnClickListener(onOptionClickListener(3, binding.option4Tv, test))
+    }
+
+    private fun showInfoDialog(test: Test) {
+        val dialog = Dialog(requireActivity())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.test_info_dialog)
+
+        dialog.window?.setLayout(
+            LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT
+        )
+
+        val infoText = dialog.findViewById<TextView>(R.id.test_info_tv)
+        infoText.text = getTestInformation(test)
+
+        dialog.setCanceledOnTouchOutside(true)
+
+        dialog.show()
+    }
+
+    private fun getTestInformation(test: Test): String {
+        return when (test.type) {
+            TestType.CONTINUE_SONG_TEXT -> getString(R.string.continue_song_text_info)
+            TestType.TITLE_SONG_TEXT -> getString(R.string.title_song_text_info)
+            TestType.AUTHOR_SONG_TEXT -> getString(R.string.author_song_text_info)
+            TestType.SONGS_OF_AUTHOR -> getString(R.string.songs_of_author_info)
+            TestType.MIME -> getString(R.string.mime_info)
+            TestType.THE_STRANGE_ONE -> getString(R.string.the_strange_one_info)
+            TestType.THE_OLDEST -> getString(R.string.the_oldest_info)
+            TestType.SONG_SOUND -> getString(R.string.song_sound_info)
+            TestType.POTPURRI -> getString(R.string.potpurri_info)
+            TestType.TITLE_SONG_EMOJIS -> getString(R.string.title_song_emojis)
+            TestType.CURIOSITY -> getString(R.string.curiosity_info)
+        }
     }
 
     private fun onOptionClickListener(optionSelected: Int, view: View, test: Test): OnClickListener {
