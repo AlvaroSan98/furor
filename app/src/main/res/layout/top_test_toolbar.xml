@@ -37,6 +37,7 @@
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/game_ranking_tv"
         app:layout_constraintEnd_toStartOf="@+id/team_points_tv"
         app:layout_constraintHorizontal_bias="0.0"

@@ -13,6 +13,17 @@
     <string name="potpurri">¡Popurrí!</string>
     <string name="title_song_emojis">Adivina el título</string>
     <string name="curiosity">¿Sabías que...?</string>
+    <string name="title_song_text_info">"Deberás adivinar el título de la canción cuya letra contiene el texto que aparece en pantalla"</string>
+    <string name="author_song_text_info">"Deberás adivinar el autor de la canción cuya letra contiene el texto que aparece en pantalla"</string>
+    <string name="continue_song_text_info">"Deberás continuar el fragmento de letra de la canción que aparece en pantalla"</string>
+    <string name="songs_of_author_info">"Deberás nombrar o cantar 3 canciones del autor que aparece en pantalla"</string>
+    <string name="mime_info">"Un miembro del equipo intentará que el resto adivine la canción que aparece en pantalla con mímica"</string>
+    <string name="the_strange_one_info">"Deberás adivinar qué canción no es del autor que aparece en pantalla"</string>
+    <string name="the_oldest_info">"Deberás adivinar qué canción es más antigua"</string>
+    <string name="song_sound_info">"Deberás adivinar la canción que comienza con el sonido que se escucha al pulsar el botón de reproducción"</string>
+    <string name="potpurri_info">"Cada equipo deberá decir por turnos una canción cuya letra contenga la palabra que aparece en pantalla"</string>
+    <string name="title_song_emojis_info">"Deberás adivinar el título de la canción que intentan representar los emojis que aparecen en pantalla"</string>
+    <string name="curiosity_info">"Deberás adivinar la opción correcta a la pregunta que aparece en pantalla"</string>
 
     <string name="play_icon_content_description">Play icon</string>
 
@@ -21,5 +32,7 @@
     <string name="team1_name_example">Los pollos hermanos</string>
     <string name="team2_name_example">Las supermemas</string>
     <string name="start_game">Comenzar a jugar</string>
+
+    <string name="accept">Aceptar</string>
 
 </resources>
