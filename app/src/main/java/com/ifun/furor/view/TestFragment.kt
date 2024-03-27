@@ -13,11 +13,13 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.ifun.furor.R
 import com.ifun.furor.databinding.TestFragmentBinding
 import com.ifun.furor.model.Team
@@ -28,6 +30,7 @@ import com.ifun.furor.model.tests.TestWithQuestion
 import com.ifun.furor.model.tests.TestWithQuestionAndAnswer
 import com.ifun.furor.model.tests.TestWithQuestionAnswerAndOptions
 import com.ifun.furor.model.enums.GameState
+import com.ifun.furor.model.exceptions.Exceptions
 import com.ifun.furor.viewmodel.GameViewModel
 
 class TestFragment: Fragment() {
@@ -372,11 +375,14 @@ class TestFragment: Fragment() {
 
             override fun onAnimationEnd(animation: Animation?) {
                 binding.topToolbar.addedPointsTv.visibility = View.INVISIBLE
-                gameViewModel.answer(correct)
-
-                if (test is TestWithQuestionAnswerAndOptions) {
-                    paintAllOptions(-1)
-                    binding.bottomToolbar.mainBottomToolbarLayout.visibility = View.VISIBLE
+                try {
+                    gameViewModel.answer(correct)
+                    if (test is TestWithQuestionAnswerAndOptions) {
+                        paintAllOptions(-1)
+                        binding.bottomToolbar.mainBottomToolbarLayout.visibility = View.VISIBLE
+                    }
+                } catch (exception: Exceptions.NotMoreTestsException) {
+                    Toast.makeText(requireActivity(), "No more tests - Game is finished", Toast.LENGTH_LONG).show()
                 }
             }
 

@@ -29,8 +29,7 @@ class TestsProvider(private val context: Context) {
             val bufferedReader = BufferedReader(inputStreamReader)
             return readCsvFile(bufferedReader)
         } catch (e: Exception) {
-            Log.e("TestsProvider", "getCsvTests error reading file")
-            return ArrayList<Test>()
+            return ArrayList()
         }
     }
 

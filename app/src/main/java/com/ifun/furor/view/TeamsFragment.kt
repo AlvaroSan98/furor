@@ -2,6 +2,7 @@ package com.ifun.furor.view
 
 import android.app.ActionBar.LayoutParams
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.contains
 import androidx.fragment.app.Fragment
@@ -21,6 +23,8 @@ import androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL
 import androidx.viewpager2.widget.ViewPager2.Orientation
 import com.ifun.furor.R
 import com.ifun.furor.databinding.TeamsFragmentBinding
+import com.ifun.furor.model.Team
+import com.ifun.furor.model.exceptions.Exceptions
 import com.ifun.furor.utils.ViewUtils
 import com.ifun.furor.viewmodel.TeamsViewModel
 
@@ -80,10 +84,14 @@ class TeamsFragment: Fragment() {
         binding.addBtn.setOnClickListener {
             val name = binding.playerNameEt.text.toString()
             if (name.isNotBlank()) {
-                if (binding.switchTeams.isChecked) {
-                    teamsViewModel.addPlayer(false, name)
-                } else {
-                    teamsViewModel.addPlayer(true, name)
+                try {
+                    if (binding.switchTeams.isChecked) {
+                        teamsViewModel.addPlayer(false, name)
+                    } else {
+                        teamsViewModel.addPlayer(true, name)
+                    }
+                } catch (exception: Exceptions.TeamFullOfPlayers) {
+                    Toast.makeText(requireActivity(), "Cannot add more players to the team", Toast.LENGTH_LONG).show()
                 }
                 binding.playerNameEt.text.clear()
                 ViewUtils.hideSoftKeyboard(requireActivity())

@@ -57,11 +57,6 @@ class GameViewModel: ViewModel() {
         return game.isCurrentTeamWinning()
     }
 
-    fun getCorrectAnswer(): String {
-        val test = test.value as TestWithQuestionAndAnswer
-        return test.answer
-    }
-
     fun getGameState(): LiveData<GameState> {
         return gameState
     }

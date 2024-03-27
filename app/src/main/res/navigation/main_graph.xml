@@ -20,10 +20,6 @@
         <argument
             android:name="team2Name"
             app:argType="string" />
-        <action
-            android:id="@+id/action_testFragment_to_answerFragment2"
-            app:destination="@id/answerFragment"
-            app:popUpTo="@id/teamsFragment" />
     </fragment>
     <fragment
         android:id="@+id/teamsFragment"
@@ -32,14 +28,5 @@
         <action
             android:id="@+id/action_teamsFragment_to_testFragment"
             app:destination="@id/testFragment"/>
-    </fragment>
-    <fragment
-        android:id="@+id/answerFragment"
-        android:name="com.ifun.furor.view.AnswerFragment"
-        android:label="answerFragment" >
-        <action
-            android:id="@+id/action_answerFragment_to_testFragment"
-            app:destination="@id/testFragment"
-            app:popUpTo="@id/testFragment" />
     </fragment>
 </navigation>

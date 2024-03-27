@@ -3,6 +3,7 @@ package com.ifun.furor.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ifun.furor.model.exceptions.Exceptions
 
 class TeamsViewModel: ViewModel() {
 
@@ -27,6 +28,8 @@ class TeamsViewModel: ViewModel() {
         } else if (!team1 && team_2_players.size < 11){
             team_2_players.add(name)
             team_2_list.postValue(team_2_players)
+        } else {
+            throw Exceptions.TeamFullOfPlayers()
         }
     }
 
