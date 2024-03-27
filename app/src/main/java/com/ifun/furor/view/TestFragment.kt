@@ -144,10 +144,12 @@ class TestFragment: Fragment() {
         }
 
         binding.bottomToolbar.testCheckIv.setOnClickListener {
+            cancelTimerIfIsRunning()
             startPointsAddedAnimation(test, true)
         }
 
         binding.bottomToolbar.testFailedIv.setOnClickListener {
+            cancelTimerIfIsRunning()
             startPointsAddedAnimation(test, false)
         }
 
@@ -217,6 +219,7 @@ class TestFragment: Fragment() {
             } else {
                 paintAllOptions(correctOption)
             }
+            cancelTimerIfIsRunning()
             startPointsAddedAnimation(test, selectedIsCorrect)
         }
     }
